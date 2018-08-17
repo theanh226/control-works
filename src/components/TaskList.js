@@ -12,6 +12,7 @@ class TaskList extends Component {
                 indexInTaskList={index} 
                 taskInTaskList={task} 
                 onUpdate={this.props.onUpdate}
+                onRemove={this.props.onRemove}
                 />
       });
     return (

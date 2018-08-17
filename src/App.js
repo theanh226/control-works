@@ -88,6 +88,8 @@ class App extends Component {
             localStorage.setItem('tasks',JSON.stringify(taskUpdate));
         }
     }
+
+    
     findIndex = (id) => {
         var result = -1;
         var taskSearch = this.state.tasks;
@@ -97,6 +99,20 @@ class App extends Component {
             }
         });
         return result;
+    }
+
+    onRemove =(id)=>{
+         var taskUpdate = this.state.tasks;
+         var index = this.findIndex(id);
+         console.log(index);
+         if(index !== -1){
+            taskUpdate.splice(index,1);
+            this.setState({
+                tasks:taskUpdate
+            })
+            localStorage.setItem('tasks',JSON.stringify(taskUpdate));
+        }
+        this.closeFrom();
     }
 
 
@@ -115,11 +131,11 @@ class App extends Component {
       </div>
       <div className="row">
 
-          <div className={ displayFrom ? 'col-xs-4 col-sm-4 col-md-4 col-lg-4':''}>
+          <div className={ displayFrom ? 'col-xs-12 col-sm-12 col-md-4 col-lg-4':''}>
                 {showTaskFrom}
           </div>
 
-          <div className={this.state.displayFrom ? 'col-xs-8 col-sm-8 col-md-8 col-lg-8':'col-xs-12 col-sm-12 col-md-12 col-lg-12'}>
+          <div className={this.state.displayFrom ? 'col-xs-12 col-sm-12 col-md-8 col-lg-8':'col-xs-12 col-sm-12 col-md-12 col-lg-12'}>
                 <button type="button" className="btn btn-success" onClick={this.openTaskFrom}>
                     <span className="fa fa-plus mr-2"></span>Add new work
                 </button>
@@ -131,7 +147,7 @@ class App extends Component {
                 </div>
                 <div className="row mt-2">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <TaskList tasksInApp={tasksList} onUpdate={this.onUpdate}/>
+                        <TaskList tasksInApp={tasksList} onUpdate={this.onUpdate} onRemove={this.onRemove}/>
                     </div>
                 </div>
           </div>

@@ -2,9 +2,16 @@ import React, { Component } from 'react';
 
 
 class TaskItem extends Component {
+
+
     onUpdate = () => {
         //console.log(this.props.taskInTaskList.id);
         this.props.onUpdate(this.props.taskInTaskList.id);
+    }
+
+    onRemove = () => {
+        //console.log(this.props.taskInTaskList.id);
+        this.props.onRemove(this.props.taskInTaskList.id);
     }
     
   render() {
@@ -20,12 +27,12 @@ class TaskItem extends Component {
                    
             </span>
         </td>
-        <td className="text-center">
+        <td className="text-center d-flex justify-content-center">
             <button type="button" className="btn btn-warning">
                 <span className="fa fa-pencil mr-2" ></span>Adjust
             </button>
             &nbsp;
-            <button type="button" className="btn btn-danger">
+            <button type="button" className="btn btn-danger" onClick={this.onRemove}>
                 <span className="fa fa-trash mr-2"></span>Remove
             </button>
         </td>
