@@ -13,6 +13,7 @@ class TaskList extends Component {
                 taskInTaskList={task} 
                 onUpdate={this.props.onUpdate}
                 onRemove={this.props.onRemove}
+                onUpdateTask={this.props.onUpdateTask}
                 />
       });
     return (
@@ -50,3 +51,4 @@ class TaskList extends Component {
 }
 
 export default TaskList;
+

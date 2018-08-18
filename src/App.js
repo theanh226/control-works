@@ -13,7 +13,7 @@ class App extends Component {
         this.state = {
             tasks: [],// id, unique, name , status
             displayFrom:false,
-             
+            taskEdit: null
         }
     }
 
@@ -51,35 +51,52 @@ class App extends Component {
     }
 
     openTaskFrom = () =>{
-        this.setState({
-            // if(this.state.displayFrom === true){
-            //     this.setState({displayFrom:false});
-            // }else{
-            //     this.setState({displayFrom:true});
-            // }
-            displayFrom: !this.state.displayFrom
+        if(this.state.displayFrom && this.state.taskEdit !== null) {
+            this.setState({
+                displayFrom: true,
+                taskEdit:null
+    
+            })
+        }
+        else{
+            this.setState({
+                displayFrom: !this.state.displayFrom,
+                taskEdit:null
+    
+            })
+        }
 
-        })
     }
 
     closeFrom = () => {
       this.setState({displayFrom:false});
     }
 
-    onSubmitInApp = (data)=>{
-        data.id = randomstring.generate();
+    showFrom = () => {
+        this.setState({displayFrom:true});
+    }
 
-      var newTask = this.state.tasks;
-    newTask.push(data);
-      this.setState({tasks: newTask});
-      localStorage.setItem('tasks',JSON.stringify(newTask));
-      console.log(this.state.tasks);
+    onSubmitInApp = (data)=>{
+        var newTask = this.state.tasks;
+        if(data.id === ''){
+            data.id = randomstring.generate();
+            newTask.push(data);
+        }
+        else{
+            var index = this.findIndex(data.id);
+            newTask[index] = data;
+        }
+        
+        this.setState({
+            tasks: newTask,
+            taskEdit:null
+        });
+        localStorage.setItem('tasks',JSON.stringify(newTask));
     }
 
     onUpdate = (updateID) => {
         var taskUpdate = this.state.tasks;
         var index = this.findIndex(updateID);
-        console.log(index);
         if(index !== -1){
             taskUpdate[index].status =  !taskUpdate[index].status ;
             this.setState({
@@ -104,7 +121,6 @@ class App extends Component {
     onRemove =(id)=>{
          var taskUpdate = this.state.tasks;
          var index = this.findIndex(id);
-         console.log(index);
          if(index !== -1){
             taskUpdate.splice(index,1);
             this.setState({
@@ -116,12 +132,27 @@ class App extends Component {
     }
 
 
+    onUpdateTask = (id) =>{
+        var {tasks} = this.state;
+        var index = this.findIndex(id);
+        var editRef = tasks[index]; 
+        this.setState({
+            taskEdit:editRef
+        })
+        this.showFrom();
+    }
+
+
   render() {
 
     // var tasksList = this.state.tasks;
    var tasksList = this.state.tasks; 
-   var {displayFrom} = this.state;
-   var showTaskFrom = displayFrom === true ? <TaskForm closeFrom={this.closeFrom} onHandleSubmit={this.onSubmitInApp} />:'';
+   var {displayFrom, taskEdit} = this.state;
+   var showTaskFrom = displayFrom === true ? <TaskForm 
+                                                closeFrom={this.closeFrom} 
+                                                onHandleSubmit={this.onSubmitInApp} 
+                                                taskEditTranfser={taskEdit} 
+                                                />:'';
 
     return (
   <div className="container">
@@ -147,7 +178,12 @@ class App extends Component {
                 </div>
                 <div className="row mt-2">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <TaskList tasksInApp={tasksList} onUpdate={this.onUpdate} onRemove={this.onRemove}/>
+                        <TaskList 
+                            tasksInApp={tasksList} 
+                            onUpdate={this.onUpdate}
+                            onRemove={this.onRemove}
+                            onUpdateTask={this.onUpdateTask}
+                        />
                     </div>
                 </div>
           </div>
@@ -158,3 +194,4 @@ class App extends Component {
 }
 
 export default App;
+
