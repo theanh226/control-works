@@ -13,7 +13,12 @@ class App extends Component {
         this.state = {
             tasks: [],// id, unique, name , status
             displayFrom:false,
-            taskEdit: null
+            taskEdit: null,
+            filter : {
+                name :'',
+                status: -1
+            },
+            keyword:''
         }
     }
 
@@ -142,12 +147,51 @@ class App extends Component {
         this.showFrom();
     }
 
+    onFilter  = (filterName,filterStatus) => {
+        var filterStatusParse = parseInt(filterStatus,10);
+        this.setState({
+            filter:{
+                name:filterName.toLowerCase(),
+                status:filterStatusParse
+            }
+        })
+       //console.log(filterStatusParse + '  ' + typeof filterStatusParse);
+    } 
+
+    onSearch = (key) => {
+        this.setState({
+            keyword:key.toLowerCase()
+        })
+        //console.log(this.state.keyword);
+    }
+
 
   render() {
 
     // var tasksList = this.state.tasks;
    var tasksList = this.state.tasks; 
-   var {displayFrom, taskEdit} = this.state;
+   var {displayFrom, taskEdit, filter,keyword} = this.state;
+   if(filter){
+       if(filter.name){
+           tasksList = tasksList.filter((tasks)=>{
+               return tasks.name.toLowerCase().indexOf(filter.name) !== -1;
+           })
+       }
+       tasksList = tasksList.filter((tasks)=>{
+           if(filter.status === -1){
+               return tasksList;
+           }
+           else{
+             return tasks.status === (filter.status === 1 ? true:false);
+           }
+       })
+   }
+
+   if(keyword){
+    tasksList = tasksList.filter((tasks)=>{
+        return tasks.name.toLowerCase().indexOf(keyword) !== -1;
+    })
+   }
    var showTaskFrom = displayFrom === true ? <TaskForm 
                                                 closeFrom={this.closeFrom} 
                                                 onHandleSubmit={this.onSubmitInApp} 
@@ -174,7 +218,7 @@ class App extends Component {
                     Generate Data
                 </button>
                 <div className="Control">
-                        <Control />
+                        <Control onSearch={this.onSearch} />
                 </div>
                 <div className="row mt-2">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -183,6 +227,7 @@ class App extends Component {
                             onUpdate={this.onUpdate}
                             onRemove={this.onRemove}
                             onUpdateTask={this.onUpdateTask}
+                            onFilter={this.onFilter}
                         />
                     </div>
                 </div>
