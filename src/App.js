@@ -4,7 +4,7 @@ import TaskForm from './components/TaskForm';
 import Control from './components/Control';
 import TaskList from './components/TaskList';
 import randomstring from 'randomstring';
-
+import Demo from './trainning/Demo';
 
 class App extends Component {
 
@@ -196,7 +196,7 @@ class App extends Component {
                                                 closeFrom={this.closeFrom} 
                                                 onHandleSubmit={this.onSubmitInApp} 
                                                 taskEditTranfser={taskEdit} 
-                                                />:'';
+                                            />:'';
 
     return (
   <div className="container">
