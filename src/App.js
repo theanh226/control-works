@@ -4,7 +4,7 @@ import TaskForm from './components/TaskForm';
 import Control from './components/Control';
 import TaskList from './components/TaskList';
 import randomstring from 'randomstring';
-import Demo from './trainning/Demo';
+
 
 class App extends Component {
 
@@ -223,7 +223,7 @@ class App extends Component {
                 <div className="row mt-2">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <TaskList 
-                            tasksInApp={tasksList} 
+                            // tasksInApp={tasksList} 
                             onUpdate={this.onUpdate}
                             onRemove={this.onRemove}
                             onUpdateTask={this.onUpdateTask}
