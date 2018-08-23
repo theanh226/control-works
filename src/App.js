@@ -11,7 +11,7 @@ class App extends Component {
     constructor(props){
         super(props);
         this.state = {
-            tasks: [],// id, unique, name , status
+            
             displayFrom:false,
             taskEdit: null,
             filter : {
@@ -22,14 +22,7 @@ class App extends Component {
         }
     }
 
-    componentWillMount(){
-        if(localStorage && localStorage.getItem('tasks')){
-            var todos = JSON.parse(localStorage.getItem('tasks'));
-            this.setState({
-                tasks :todos
-            })
-        }
-    }
+
 
     onGenerateData = () => {
         var todos = [
@@ -169,29 +162,32 @@ class App extends Component {
   render() {
 
     // var tasksList = this.state.tasks;
-   var tasksList = this.state.tasks; 
-   var {displayFrom, taskEdit, filter,keyword} = this.state;
-   if(filter){
-       if(filter.name){
-           tasksList = tasksList.filter((tasks)=>{
-               return tasks.name.toLowerCase().indexOf(filter.name) !== -1;
-           })
-       }
-       tasksList = tasksList.filter((tasks)=>{
-           if(filter.status === -1){
-               return tasksList;
-           }
-           else{
-             return tasks.status === (filter.status === 1 ? true:false);
-           }
-       })
-   }
+//    var tasksList = this.state.tasks; 
+   var {displayFrom, taskEdit,
+    //  filter,
+    //  keyword
+    } = this.state;
+//    if(filter){
+//        if(filter.name){
+//            tasksList = tasksList.filter((tasks)=>{
+//                return tasks.name.toLowerCase().indexOf(filter.name) !== -1;
+//            })
+//        }
+//        tasksList = tasksList.filter((tasks)=>{
+//            if(filter.status === -1){
+//                return tasksList;
+//            }
+//            else{
+//              return tasks.status === (filter.status === 1 ? true:false);
+//            }
+//        })
+//    }
 
-   if(keyword){
-    tasksList = tasksList.filter((tasks)=>{
-        return tasks.name.toLowerCase().indexOf(keyword) !== -1;
-    })
-   }
+//    if(keyword){
+//     tasksList = tasksList.filter((tasks)=>{
+//         return tasks.name.toLowerCase().indexOf(keyword) !== -1;
+//     })
+//    }
    var showTaskFrom = displayFrom === true ? <TaskForm 
                                                 closeFrom={this.closeFrom} 
                                                 onHandleSubmit={this.onSubmitInApp} 

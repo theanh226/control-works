@@ -5,7 +5,7 @@ import tasks from './tasks';
 
 
 const rootReducer = combineReducers({
-    tasks : tasks 
+    tasks_list : tasks 
 });
 
 export default rootReducer;

@@ -44,7 +44,7 @@ class TaskList extends Component {
     <table className="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th className="text-center">STT</th>
+                    <th className="text-center">ID</th>
                     <th className="text-center">Name</th>
                     <th className="text-center">Status</th>
                     <th className="text-center">Action</th>
@@ -80,9 +80,11 @@ class TaskList extends Component {
   }
 }
 
+//Connect with store of Redux
+
 const mapStateToProps = (state) => {
     return {
-        tasks: state.tasks
+        tasks: state.tasks_list
     }
 }
 
