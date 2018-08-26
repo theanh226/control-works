@@ -76,11 +76,7 @@ class TaskForm extends Component {
       }
 
       onClear = () =>{
-          this.setState({
-            name : '',
-            status: true
-          })
-          this.closeFromInTaskForm();
+          this.props.onCloseForm();
       }
 
 

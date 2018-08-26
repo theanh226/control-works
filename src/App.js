@@ -14,7 +14,6 @@ class App extends Component {
         super(props);
         this.state = {
             
-            // displayFrom:false,
             taskEdit: null,
             filter : {
                 name :'',
@@ -61,29 +60,6 @@ class App extends Component {
         this.setState({displayFrom:true});
     }
 
-    onUpdate = (updateID) => {
-        var taskUpdate = this.state.tasks;
-        var index = this.findIndex(updateID);
-        if(index !== -1){
-            taskUpdate[index].status =  !taskUpdate[index].status ;
-            this.setState({
-                tasks:taskUpdate
-            })
-            localStorage.setItem('tasks',JSON.stringify(taskUpdate));
-        }
-    }
-
-    
-    findIndex = (id) => {
-        var result = -1;
-        var taskSearch = this.state.tasks;
-        taskSearch.forEach((task,index)=>{
-            if(id === task.id){
-                result = index
-            }
-        });
-        return result;
-    }
 
     onRemove =(id)=>{
          var taskUpdate = this.state.tasks;
@@ -117,7 +93,6 @@ class App extends Component {
                 status:filterStatusParse
             }
         })
-       //console.log(filterStatusParse + '  ' + typeof filterStatusParse);
     } 
 
     onSearch = (key) => {
@@ -160,10 +135,7 @@ class App extends Component {
 //     })
 //    }
     var {getDisplayFormInStore} = this.props;
-   var showTaskFrom = getDisplayFormInStore === true ? <TaskForm 
-                                                // closeFrom={this.closeFrom} 
-                                                taskEditTranfser={taskEdit} 
-                                            />:'';
+   var showTaskFrom = getDisplayFormInStore === true ? <TaskForm taskEditTranfser={taskEdit} />:'';
 
     return (
   <div className="container">
@@ -177,7 +149,7 @@ class App extends Component {
                 {showTaskFrom}
           </div>
 
-          <div className={this.state.displayFrom ? 'col-xs-12 col-sm-12 col-md-8 col-lg-8':'col-xs-12 col-sm-12 col-md-12 col-lg-12'}>
+          <div className={getDisplayFormInStore === true ? 'col-xs-12 col-sm-12 col-md-8 col-lg-8':'col-xs-12 col-sm-12 col-md-12 col-lg-12'}>
                 <button type="button" className="btn btn-success" onClick={this.openTaskFrom}>
                     <span className="fa fa-plus mr-2"></span>Add new work
                 </button>
@@ -221,8 +193,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         onOpenForm: () =>{
             dispatch(actions.openForm())
         }
-
-
     }
 } 
 
