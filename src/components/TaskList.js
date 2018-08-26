@@ -23,10 +23,11 @@ class TaskList extends Component {
 
         this.props.onFilter(
             name === 'filterName' ? value : this.state.filterName,
-            name === 'filterStatus' ? value : this.state.filterStatus);
+            name === 'filterStatus' ? value : this.state.filterStatus
+        );
     } 
   render() {
-    console.log(this.props.tasks);
+    //console.log(this.props.tasks);
     var {tasks}  = this.props;
     var {filterName,filterStatus} = this.state;
     var elemenstBuildTasks = tasks.map((task,index)=>{
@@ -53,6 +54,7 @@ class TaskList extends Component {
             <tbody>
                 <tr>
                     <td></td>
+
                     <td>
                         <input type="text" 
                         className="form-control"
@@ -61,6 +63,7 @@ class TaskList extends Component {
                         onChange = {this.onChangeTaskList}
                          />
                     </td>
+                    
                     <td>
                         <select className="form-control" name="filterStatus"
                         value={filterStatus}

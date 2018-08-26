@@ -13,14 +13,15 @@ var myReducer = (state = initialState, action) => {
 
         case types.ADD_TASK:
 
-        var newTask = {
-            id: randomstring.generate(),
-            name: action.task.name,
-            status: action.task.status === 'true' ? true:false
-        }
-        state.push(newTask);
-        localStorage.setItem('tasks',JSON.stringify(state));
-        return [...state]; // similar when we use map();
+            var newTask = {
+                id: randomstring.generate(),
+                name: action.task.name,
+                status: action.task.status === 'true' ? true : false
+            }
+            console.log(newTask);
+            state.push(newTask);
+            localStorage.setItem('tasks', JSON.stringify(state));
+            return [...state]; // similar when we use map();
 
         default:
             return state

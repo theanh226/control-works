@@ -14,7 +14,7 @@ class TaskForm extends Component {
     
 
     closeFromInTaskForm =()=>{
-        this.props.closeFrom();
+        this.props.onCloseForm();
     }
 
  
@@ -141,19 +141,22 @@ class TaskForm extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        tasks: state.tasks_list
-    }
-}
+// const mapStateToProps = (state) => {
+//     return {
+//         tasks: state.tasks_list
+//     }
+// }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        onAddTask: (task) => {
-            dispatch(actions.addTask(task));
-        }
+        onAddTask: (taskRef) => { // onAddTask you can  set random name for this , this need referen input as task, because we want add new task to our list
+            dispatch(actions.addTask(taskRef));
+        },
+        onCloseForm: () =>{
+            dispatch(actions.closeForm())
+        },
     }
 } 
 
-export default connect(mapStateToProps,mapDispatchToProps)(TaskForm);
+export default connect(null,mapDispatchToProps)(TaskForm);
 

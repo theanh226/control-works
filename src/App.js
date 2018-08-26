@@ -4,6 +4,8 @@ import TaskForm from './components/TaskForm';
 import Control from './components/Control';
 import TaskList from './components/TaskList';
 import randomstring from 'randomstring';
+import { connect } from 'react-redux';
+import * as actions from './actions/index';
 
 
 class App extends Component {
@@ -12,7 +14,7 @@ class App extends Component {
         super(props);
         this.state = {
             
-            displayFrom:false,
+            // displayFrom:false,
             taskEdit: null,
             filter : {
                 name :'',
@@ -49,47 +51,14 @@ class App extends Component {
     }
 
     openTaskFrom = () =>{
-        if(this.state.displayFrom && this.state.taskEdit !== null) {
-            this.setState({
-                displayFrom: true,
-                taskEdit:null
-    
-            })
-        }
-        else{
-            this.setState({
-                displayFrom: !this.state.displayFrom,
-                taskEdit:null
-    
-            })
-        }
+        this.props.onToggleForm();
+        console.log(this.props.getDisplayFormInStore)
 
     }
 
-    closeFrom = () => {
-      this.setState({displayFrom:false});
-    }
 
     showFrom = () => {
         this.setState({displayFrom:true});
-    }
-
-    onSubmitInApp = (data)=>{
-        var newTask = this.state.tasks;
-        if(data.id === ''){
-            data.id = randomstring.generate();
-            newTask.push(data);
-        }
-        else{
-            var index = this.findIndex(data.id);
-            newTask[index] = data;
-        }
-        
-        this.setState({
-            tasks: newTask,
-            taskEdit:null
-        });
-        localStorage.setItem('tasks',JSON.stringify(newTask));
     }
 
     onUpdate = (updateID) => {
@@ -163,7 +132,9 @@ class App extends Component {
 
     // var tasksList = this.state.tasks;
 //    var tasksList = this.state.tasks; 
-   var {displayFrom, taskEdit,
+   var {
+    //    displayFrom,
+        taskEdit,
     //  filter,
     //  keyword
     } = this.state;
@@ -188,9 +159,9 @@ class App extends Component {
 //         return tasks.name.toLowerCase().indexOf(keyword) !== -1;
 //     })
 //    }
-   var showTaskFrom = displayFrom === true ? <TaskForm 
-                                                closeFrom={this.closeFrom} 
-                                                onHandleSubmit={this.onSubmitInApp} 
+    var {getDisplayFormInStore} = this.props;
+   var showTaskFrom = getDisplayFormInStore === true ? <TaskForm 
+                                                // closeFrom={this.closeFrom} 
                                                 taskEditTranfser={taskEdit} 
                                             />:'';
 
@@ -202,7 +173,7 @@ class App extends Component {
       </div>
       <div className="row">
 
-          <div className={ displayFrom ? 'col-xs-12 col-sm-12 col-md-4 col-lg-4':''}>
+          <div className={ getDisplayFormInStore ? 'col-xs-12 col-sm-12 col-md-4 col-lg-4':''}>
                 {showTaskFrom}
           </div>
 
@@ -234,5 +205,28 @@ class App extends Component {
   }
 }
 
-export default App;
+
+const mapStateToProps = (state) => {
+    return {
+        getDisplayFormInStore : state.isDisplayForm //isDisplayFrom is in store
+    }
+}
+
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        onToggleForm: () =>{
+            dispatch(actions.toggleForm())
+        },
+        onOpenForm: () =>{
+            dispatch(actions.openForm())
+        }
+
+
+    }
+} 
+
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);
 
