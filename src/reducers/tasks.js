@@ -32,7 +32,7 @@ var myReducer = (state = initialState, action) => {
 
 
         case types.UPDATE_STATUS_TASK:
-            var index = findIndex(state, action.id);
+            index = findIndex(state, action.id);
             state[index] = {
                 ...state[index], // copy task in this index
                 status: !state[index].status // change status
@@ -63,9 +63,8 @@ var myReducer = (state = initialState, action) => {
             if (!task.id) {
                 task.id = randomstring.generate();
                 state.push(task);
-
             } else {
-                var index = findIndex(state, task.id);
+                index = findIndex(state, task.id);
                 state[index] = task;
             }
             localStorage.setItem('tasks', JSON.stringify(state));

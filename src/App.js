@@ -3,7 +3,6 @@ import './App.css';
 import TaskForm from './components/TaskForm';
 import Control from './components/Control';
 import TaskList from './components/TaskList';
-import randomstring from 'randomstring';
 import { connect } from 'react-redux';
 import * as actions from './actions/index';
 
@@ -13,38 +12,8 @@ class App extends Component {
     constructor(props){
         super(props);
         this.state = {
-            filter : {
-                name :'',
-                status: -1
-            },
             keyword:''
         }
-    }
-
-
-
-    onGenerateData = () => {
-        var todos = [
-            {
-            id: randomstring.generate(),
-            name :'Go to Swim',
-            status: true
-           },
-           {
-            id: randomstring.generate(),
-            name :'Go to Sleep',
-            status: true
-           },
-           {
-            id: randomstring.generate(),
-            name :'Go to Shopping',
-            status: false
-           },
-        ]
-       this.setState({
-           tasks: todos
-       })
-       localStorage.setItem('tasks',JSON.stringify(todos));
     }
 
     openTaskFrom = () =>{
@@ -57,35 +26,6 @@ class App extends Component {
 
     }
 
-
-    showFrom = () => {
-        this.setState({displayFrom:true});
-    }
-
-
-    onRemove =(id)=>{
-         var taskUpdate = this.state.tasks;
-         var index = this.findIndex(id);
-         if(index !== -1){
-            taskUpdate.splice(index,1);
-            this.setState({
-                tasks:taskUpdate
-            })
-            localStorage.setItem('tasks',JSON.stringify(taskUpdate));
-        }
-        this.closeFrom();
-    }
-
-
-    onUpdateTask = (id) =>{
-        var {tasks} = this.state;
-        var index = this.findIndex(id);
-        var editRef = tasks[index]; 
-        this.setState({
-            taskEdit:editRef
-        })
-        this.showFrom();
-    }
 
     onFilter  = (filterName,filterStatus) => {
         var filterStatusParse = parseInt(filterStatus,10);
@@ -105,32 +45,7 @@ class App extends Component {
 
 
   render() {
-   var {
-    //  filter,
-    //  keyword
-    } = this.state;
-//    if(filter){
-//        if(filter.name){
-//            tasksList = tasksList.filter((tasks)=>{
-//                return tasks.name.toLowerCase().indexOf(filter.name) !== -1;
-//            })
-//        }
-//        tasksList = tasksList.filter((tasks)=>{
-//            if(filter.status === -1){
-//                return tasksList;
-//            }
-//            else{
-//              return tasks.status === (filter.status === 1 ? true:false);
-//            }
-//        })
-//    }
-
-//    if(keyword){
-//     tasksList = tasksList.filter((tasks)=>{
-//         return tasks.name.toLowerCase().indexOf(keyword) !== -1;
-//     })
-//    }
-    var {getDisplayFormInStore} = this.props;
+  var {getDisplayFormInStore} = this.props;
    var showTaskFrom = getDisplayFormInStore === true ? <TaskForm /> :'';
 
     return (
@@ -149,17 +64,12 @@ class App extends Component {
                 <button type="button" className="btn btn-success" onClick={this.openTaskFrom}>
                     <span className="fa fa-plus mr-2"></span>Add new work
                 </button>
-                <button type="button" className="btn btn-danger ml-2" onClick={this.onGenerateData}>
-                    Generate Data
-                </button>
                 <div className="Control">
-                        <Control onSearch={this.onSearch} />
+                        <Control/>
                 </div>
                 <div className="row mt-2">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <TaskList 
-                            onFilter={this.onFilter}
-                        />
+                        <TaskList />
                     </div>
                 </div>
           </div>

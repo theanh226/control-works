@@ -11,7 +11,7 @@ class TaskItem extends Component {
     }
 
     onRemove = () => {
-        this.props.onDeleteTask(this.props.taskInTaskList);
+        this.props.onDeleteTask(this.props.taskInTaskList.id);
         this.props.onCloseFomr();
     }
 

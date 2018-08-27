@@ -9,9 +9,8 @@ class Control extends Component {
     return (
 
         <div className="row mt-2">
-        {/* Search Component */}
         <div className="col-xs-6 col-sm-6 col-md-8 col-lg-6">
-        <Search  onSearch={this.props.onSearch} />
+        <Search />
         </div>
       </div>
 

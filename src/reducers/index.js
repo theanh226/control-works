@@ -4,12 +4,16 @@ import {
 import tasks from './tasks';
 import isDisplayForm from './isDisplayForm';
 import editTaks from './editTaks';
+import filteTable from './filterTable';
+import searchTask from './searchTask';
 
 
 const rootReducer = combineReducers({
-    tasks_list : tasks ,
+    tasks ,
     isDisplayForm, // isDisplayForm: isDisplayForm(Ref)
-    editTaks
+    editTaks,
+    filteTable,
+    searchTask
+   
 });
-
 export default rootReducer;
