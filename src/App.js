@@ -13,8 +13,6 @@ class App extends Component {
     constructor(props){
         super(props);
         this.state = {
-            
-            taskEdit: null,
             filter : {
                 name :'',
                 status: -1
@@ -50,8 +48,12 @@ class App extends Component {
     }
 
     openTaskFrom = () =>{
-        this.props.onToggleForm();
-        console.log(this.props.getDisplayFormInStore)
+        this.props.onOpenForm();
+        this.props.onClearTask({
+            id:'',
+            name: '',
+            status:false
+        })
 
     }
 
@@ -99,17 +101,11 @@ class App extends Component {
         this.setState({
             keyword:key.toLowerCase()
         })
-        //console.log(this.state.keyword);
     }
 
 
   render() {
-
-    // var tasksList = this.state.tasks;
-//    var tasksList = this.state.tasks; 
    var {
-    //    displayFrom,
-        taskEdit,
     //  filter,
     //  keyword
     } = this.state;
@@ -135,7 +131,7 @@ class App extends Component {
 //     })
 //    }
     var {getDisplayFormInStore} = this.props;
-   var showTaskFrom = getDisplayFormInStore === true ? <TaskForm taskEditTranfser={taskEdit} />:'';
+   var showTaskFrom = getDisplayFormInStore === true ? <TaskForm /> :'';
 
     return (
   <div className="container">
@@ -162,10 +158,6 @@ class App extends Component {
                 <div className="row mt-2">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <TaskList 
-                            // tasksInApp={tasksList} 
-                            onUpdate={this.onUpdate}
-                            onRemove={this.onRemove}
-                            onUpdateTask={this.onUpdateTask}
                             onFilter={this.onFilter}
                         />
                     </div>
@@ -192,6 +184,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         onOpenForm: () =>{
             dispatch(actions.openForm())
+        },
+        onClearTask: (task) => {
+            dispatch(actions.editTask(task));
         }
     }
 } 

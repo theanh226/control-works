@@ -6,44 +6,46 @@ class TaskForm extends Component {
     constructor(props){
         super(props);
         this.state = {
-            id:'',
-            name : '',
-            status: true
+            id: '',
+            name: '',
+            status: false,
         };
       }
     
 
     closeFromInTaskForm =()=>{
+        this.onClear();
         this.props.onCloseForm();
     }
 
  
     componentWillMount = () => {
         // Thực hiện một số tác vụ, hàm này chỉ thực hiện 1 lần duy nhất
-       if(this.props.taskEditTranfser){
+       if(this.props.editTaks){
         this.setState({
-            id: this.props.taskEditTranfser.id,
-            name: this.props.taskEditTranfser.name,
-            status: this.props.taskEditTranfser.status
+            id: this.props.editTaks.id,
+            name: this.props.editTaks.name,
+            status: this.props.editTaks.status
         })
-
        }
+       console.log(this.props.editTaks);
     }
 
-    componentWillReceiveProps = (nextProps) => {
+    
     // Hàm này thực hiện liên tục mỗi khi props thay đổi
     // (1) Sử dụng để thay đổi trạng thái (state) của component phụ thuộc props
     // (2) Sử dụng các kết quả, khởi tạo biến có tính chất async. Ví dụ: Khởi tạo Google Map Api, đây là quá trình async,
     // do vậy, bạn không thể biết được khi nào khởi tạo xong, thì khi khởi tạo xong có thể truyền xuống component thông qua
     // props, và từ đó bạn có thể khởi tạo các dịch vụ khác.
-        if(nextProps && nextProps.taskEditTranfser){
+    componentWillReceiveProps = (nextProps) => {
+        if(nextProps && nextProps.editTaks){
          this.setState({
-             id: nextProps.taskEditTranfser.id,
-             name: nextProps.taskEditTranfser.name,
-             status: nextProps.taskEditTranfser.status
+             id: nextProps.editTaks.id,
+             name: nextProps.editTaks.name,
+             status: nextProps.editTaks.status
          })
         }
-        else if(!nextProps.taskEditTranfser){
+        else if(!nextProps.editTaks){
             console.log('Adjust -> Add');
             this.setState({
                 id:'',
@@ -59,9 +61,11 @@ class TaskForm extends Component {
         var target = event.target;
         var name = target.name;
         var value = target.value;
+
         if(name === 'status'){
-            value = target.value ==='true' ? true:false;
+            value = target.value ==='true' ? true : false;
         }
+
         this.setState({
           [name]: value
         })
@@ -69,20 +73,23 @@ class TaskForm extends Component {
 
       onHandleSubmitInTaskFrom = (event) =>{
         event.preventDefault(); 
-        // this.props.onHandleSubmit(this.state);
-        this.props.onAddTask(this.state);
+        this.props.onSaveTask(this.state);
         this.onClear();
-        this.closeFromInTaskForm();
+        this.props.onCloseForm();
       }
 
       onClear = () =>{
+          this.setState({
+            id: '',
+            name: '',
+            status: false,
+          })
           this.props.onCloseForm();
       }
 
 
   render() {
 
-    var {id} = this.state;
 
     return (
          
@@ -91,9 +98,9 @@ class TaskForm extends Component {
             <div className="alert alert-warning">
 
                 <div className="alert-heading">
-                    <h3 className="alert-title text-fs-sm">{id !== '' ? 'Update Works':'Add new work'}
+                    <h3 className="alert-title text-fs-sm">{this.props.editTaks.id !== '' ? 'Update Works':'Add new work'}
                     <span className="fa fa-times-circle-o close-icon-in-task-form"
-                        onClick={this.closeFromInTaskForm}
+                        onClick={this.onClear}
                     ></span>
                     </h3>
 
@@ -124,7 +131,7 @@ class TaskForm extends Component {
                             <button 
                             type="submit"
                             className="btn btn-success mr-1" >
-                            {id !== '' ? 'Update':'Add'}</button>
+                            {this.props.editTaks.id !== '' ? 'Update':'Add'}</button>
                             <button type="button" className="btn btn-danger" onClick={this.onClear}>Cancel</button>
                         </div>
 
@@ -137,16 +144,16 @@ class TaskForm extends Component {
   }
 }
 
-// const mapStateToProps = (state) => {
-//     return {
-//         tasks: state.tasks_list
-//     }
-// }
+const mapStateToProps = (state) => {
+    return {
+        editTaks : state.editTaks
+    }
+}
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        onAddTask: (taskRef) => { // onAddTask you can  set random name for this , this need referen input as task, because we want add new task to our list
-            dispatch(actions.addTask(taskRef));
+        onSaveTask: (taskRef) => { // onAddTask you can  set random name for this , this need referen input as task, because we want add new task to our list
+            dispatch(actions.saveTask(taskRef));
         },
         onCloseForm: () =>{
             dispatch(actions.closeForm())
@@ -154,5 +161,5 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     }
 } 
 
-export default connect(null,mapDispatchToProps)(TaskForm);
+export default connect(mapStateToProps,mapDispatchToProps)(TaskForm);
 

@@ -7,16 +7,18 @@ class TaskItem extends Component {
 
 
     onUpdate = () => {
-        // this.props.onUpdate(this.props.taskInTaskList.id);
         this.props.onUpdateStatus(this.props.taskInTaskList.id);
     }
 
     onRemove = () => {
-        this.props.onRemove(this.props.taskInTaskList.id);
+        this.props.onDeleteTask(this.props.taskInTaskList);
+        this.props.onCloseFomr();
     }
 
     onUpdateTask = () => {
-        this.props.onUpdateTask(this.props.taskInTaskList.id);
+        this.props.onOpenForm();
+        this.props.onEditTask(this.props.taskInTaskList);
+        
     }
     
   render() {
@@ -28,9 +30,8 @@ class TaskItem extends Component {
         <td>{taskInTaskList.name}</td>
 
         <td className="text-center">
-            <span className={taskInTaskList.status === true ? 'badge badge-success' : 'badge badge-secondary'} 
-            onClick={this.onUpdate} >
-            {taskInTaskList.status === true ? 'Active':'Deactive'}
+            <span className={taskInTaskList.status === true ? 'badge badge-success' : 'badge badge-secondary'} onClick={this.onUpdate} >
+                {taskInTaskList.status === true ? 'Active':'Deactive'}
             </span>
         </td>
 
@@ -48,6 +49,8 @@ class TaskItem extends Component {
   }
 }
 
+
+
 const mapStateToProps = (state) => {
     return {
     }
@@ -59,6 +62,21 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         onUpdateStatus: (id) =>{
             dispatch(actions.updateStatus(id))
         },
+        onDeleteTask :(id) =>{
+            dispatch(actions.deleteTask(id))
+        },
+        onCloseFomr : ()=>{
+            dispatch(actions.closeForm())
+        },
+        onToggleForm: ()=>{
+            dispatch(actions.toggleForm());
+        },
+        onOpenForm: () =>{
+            dispatch(actions.openForm());
+        },
+        onEditTask: (task) => {
+            dispatch(actions.editTask(task))
+        }
     }
 } 
 
